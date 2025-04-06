@@ -761,3 +761,31 @@ margin-top: 160px;
   margin: auto;
 }
 }
+
+/* Categories Section */
+.categories-section {
+  margin: 2rem 0;
+  text-align: center;
+}
+
+.categories-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  padding: 1rem 0;
+}
+
+.category-button {
+  background: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 0.8rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.category-button:hover {
+  background: #e2e2e2;
+  transform: translateY(-2px);
+}
