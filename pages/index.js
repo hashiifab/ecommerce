@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { client } from '../lib/client';
-import { Product, FooterBanner, HeroBanner } from '../components';
+import { Product, HeroBanner } from '../components';
 import Link from 'next/link';
 
 const Home = ({ products, bannerData, categories }) => (
@@ -30,7 +30,7 @@ const Home = ({ products, bannerData, categories }) => (
       {products?.map((product) => <Product key={product._id} product={product} />)}
     </div>
 
-    <FooterBanner footerBanner={bannerData && bannerData[0]} />
+    {/* Footer banner has been removed */}
   </div>
 );
 

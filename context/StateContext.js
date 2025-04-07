@@ -1,19 +1,49 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
+import { useAuth, useUser } from '@clerk/nextjs';
 
 const Context = createContext();
 
 export const StateContext = ({ children }) => {
+  const { isSignedIn, userId } = useAuth();
+  const { user } = useUser();
   const [showCart, setShowCart] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalQuantities, setTotalQuantities] = useState(0);
   const [qty, setQty] = useState(1);
+  
+  // Load cart from localStorage when component mounts and user is signed in
+  useEffect(() => {
+    if (isSignedIn && userId) {
+      const cartData = localStorage.getItem(`cart-${userId}`);
+      const priceData = localStorage.getItem(`price-${userId}`);
+      const quantityData = localStorage.getItem(`quantity-${userId}`);
+      
+      if (cartData) setCartItems(JSON.parse(cartData));
+      if (priceData) setTotalPrice(Number(priceData));
+      if (quantityData) setTotalQuantities(Number(quantityData));
+    }
+  }, [isSignedIn, userId]);
+  
+  // Save cart to localStorage whenever it changes
+  useEffect(() => {
+    if (isSignedIn && userId) {
+      localStorage.setItem(`cart-${userId}`, JSON.stringify(cartItems));
+      localStorage.setItem(`price-${userId}`, totalPrice.toString());
+      localStorage.setItem(`quantity-${userId}`, totalQuantities.toString());
+    }
+  }, [cartItems, totalPrice, totalQuantities, isSignedIn, userId]);
 
   let foundProduct;
   let index;
 
   const onAdd = (product, quantity) => {
+    if (!isSignedIn) {
+      toast.error('Please sign in to add items to cart');
+      return;
+    }
+    
     const checkProductInCart = cartItems.find((item) => item._id === product._id);
     
     setTotalPrice((prevTotalPrice) => prevTotalPrice + product.price * quantity);
