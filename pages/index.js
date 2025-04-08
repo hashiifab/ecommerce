@@ -27,7 +27,9 @@ const Home = ({ products, bannerData, categories }) => (
     </div>
 
     <div className="products-container">
-      {products?.map((product) => <Product key={product._id} product={product} />)}
+      {products?.map((product) => (
+        <Product key={product._id} product={product} />
+      ))}
     </div>
 
     {/* Footer banner has been removed */}
